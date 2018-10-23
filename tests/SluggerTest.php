@@ -59,25 +59,25 @@ class SluggerTest extends TestCase
 	public function testTransliterateRussianLatin()
 	{
 		$input = 'съешь ещё этих мягких французских булок, да выпей чаю';
-		$output = 's"yesh\' yeshche etikh myagkikh frantsuzskikh bulok, da vypey chayu';
+		$output = 's”yesh’ yeshche etikh myagkikh frantsuzskikh bulok, da vypey chayu';
 
 		$slugger = new Slugger();
 
 		$slugger->setTransliteratorId(self::RUSSIAN_LATIN_TRANSLITERATOR_ID);
 
-		$this->assertEquals($output, $slugger->transliterate($input, 'Any-Latin; Latin-ASCII'));
+		$this->assertEquals($output, $slugger->transliterate($input, 'Any-Latin; Latin-ASCII; Publishing'));
 	}
 
 	public function testTransliterateCyrillicLatin()
 	{
 		$input = 'съешь ещё этих мягких французских булок, да выпей чаю';
-		$output = 's"es\' ese etih magkih francuzskih bulok, da vypej cau';
+		$output = 's”es’ ese etih magkih francuzskih bulok, da vypej cau';
 
 		$slugger = new Slugger();
 
 		$slugger->setTransliteratorId(self::CYRILLIC_LATIN_TRANSLITERATOR_ID);
 
-		$this->assertEquals($output, $slugger->transliterate($input, 'Any-Latin; Latin-ASCII'));
+		$this->assertEquals($output, $slugger->transliterate($input, 'Any-Latin; Latin-ASCII; Publishing'));
 	}
 
 	public function testSlugifyRussianLatin()
@@ -102,6 +102,18 @@ class SluggerTest extends TestCase
 		$slugger->setTransliteratorId(self::CYRILLIC_LATIN_TRANSLITERATOR_ID);
 
 		$this->assertEquals($output, $slugger->slugify($input));
+	}
+
+	public function testSlugifyWithDelimiter()
+	{
+		$input = '   А   Б   В   ';
+		$output = 'a_b_v';
+
+		$slugger = new Slugger();
+
+		$slugger->setTransliteratorId(self::RUSSIAN_LATIN_TRANSLITERATOR_ID);
+
+		$this->assertEquals($output, $slugger->slugify($input, '_'));
 	}
 
 	public function testTransliterateWithInvalidCompound()
