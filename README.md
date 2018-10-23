@@ -56,6 +56,21 @@ $slugger->setTransliteratorId('Greek-Latin/BGN');
 $slugger->transliterate('Τάχιστη αλώπηξ βαφής ψημένη γη, δρασκελίζει υπέρ νωθρού κυνός', 'Lower(); Any-Latin; Latin-ASCII; [^\x20\x41-\x5A\x61-\x7A] Remove');
 ```
 
+#### Using DI Container
+
+```php
+$di['slugger'] = function() : \Sunrise\Slugger\SluggerInterface
+{
+	$slugger = new \Sunrise\Slugger\Slugger();
+
+	$slugger->setTransliteratorId('de-ASCII');
+
+	return $slugger;
+};
+
+$di['slugger']->slugify('Zwölf große Boxkämpfer jagen Viktor quer über den Sylter Deich.');
+```
+
 ## Api documentation
 
 https://phpdoc.fenric.ru/
