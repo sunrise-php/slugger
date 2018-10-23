@@ -92,13 +92,11 @@ class Slugger implements SluggerInterface
 	 */
 	public function slugify(string $string, string $delimiter = '-') : string
 	{
-		$slug = $this->transliterate($string, 'Any-Latin; Latin-ASCII; [^\x20\x41-\x5A\x61-\x7A] Remove');
+		$slug = $this->transliterate($string, 'Any-Latin; Latin-ASCII; Lower(); [^\x20\x41-\x5A\x61-\x7A] Remove');
 
 		$slug = \preg_replace('/[\x20]{2,}/', ' ', $slug);
 
 		$slug = \trim($slug);
-
-		$slug = \strtolower($slug);
 
 		$slug = \str_replace(' ', $delimiter, $slug);
 
