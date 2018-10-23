@@ -59,25 +59,25 @@ class SluggerTest extends TestCase
 	public function testTransliterateRussianLatin()
 	{
 		$input = 'съешь ещё этих мягких французских булок, да выпей чаю';
-		$output = 's”yesh’ yeshche etikh myagkikh frantsuzskikh bulok, da vypey chayu';
+		$output = 'syesh yeshche etikh myagkikh frantsuzskikh bulok da vypey chayu';
 
 		$slugger = new Slugger();
 
 		$slugger->setTransliteratorId(self::RUSSIAN_LATIN_TRANSLITERATOR_ID);
 
-		$this->assertEquals($output, $slugger->transliterate($input, 'Any-Latin; Latin-ASCII; Publishing'));
+		$this->assertEquals($output, $slugger->transliterate($input, 'Any-Latin; Latin-ASCII; [^\x20\x41-\x5A\x61-\x7A] Remove'));
 	}
 
 	public function testTransliterateCyrillicLatin()
 	{
 		$input = 'съешь ещё этих мягких французских булок, да выпей чаю';
-		$output = 's”es’ ese etih magkih francuzskih bulok, da vypej cau';
+		$output = 'ses ese etih magkih francuzskih bulok da vypej cau';
 
 		$slugger = new Slugger();
 
 		$slugger->setTransliteratorId(self::CYRILLIC_LATIN_TRANSLITERATOR_ID);
 
-		$this->assertEquals($output, $slugger->transliterate($input, 'Any-Latin; Latin-ASCII; Publishing'));
+		$this->assertEquals($output, $slugger->transliterate($input, 'Any-Latin; Latin-ASCII; [^\x20\x41-\x5A\x61-\x7A] Remove'));
 	}
 
 	public function testSlugifyRussianLatin()
