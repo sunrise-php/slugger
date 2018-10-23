@@ -6,6 +6,10 @@
 [![Total Downloads](https://poser.pugx.org/sunrise/slugger/downloads?format=flat)](https://packagist.org/packages/sunrise/slugger)
 [![License](https://poser.pugx.org/sunrise/slugger/license?format=flat)](https://packagist.org/packages/sunrise/slugger)
 
+## Awards
+
+[![SymfonyInsight](https://insight.symfony.com/projects/64e80815-60f3-47eb-8163-8bd2538376e9/big.svg)](https://insight.symfony.com/projects/64e80815-60f3-47eb-8163-8bd2538376e9)
+
 ## Installation
 
 ```
