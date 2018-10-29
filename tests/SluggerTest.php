@@ -116,6 +116,16 @@ class SluggerTest extends TestCase
 		$this->assertEquals($output, $slugger->slugify($input, '_'));
 	}
 
+	public function testSlugifyWithNumbers()
+	{
+		$input = '0123456789 ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz';
+		$output = '0123456789-abcdefghijklmnopqrstuvwxyz-abcdefghijklmnopqrstuvwxyz';
+
+		$slugger = new Slugger();
+
+		$this->assertEquals($output, $slugger->slugify($input));
+	}
+
 	public function testTransliterateWithInvalidCompound()
 	{
 		$this->expectException(UnableToCreateTransliteratorException::class);
