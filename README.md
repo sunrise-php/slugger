@@ -18,7 +18,7 @@ composer require sunrise/slugger
 
 ## How to use
 
-#### Russian to Latin
+#### Russian to Latin (default)
 
 ```php
 $slugger = new \Sunrise\Slugger\Slugger();
@@ -34,7 +34,7 @@ $slugger = new \Sunrise\Slugger\Slugger();
 
 $slugger->setTransliteratorId('de-ASCII');
 
-// Returns "falsches-ueben-von-xylophonmusik-quaelt-jeden-groesseren-zwerg"
+// "falsches-ueben-von-xylophonmusik-quaelt-jeden-groesseren-zwerg"
 $slugger->slugify('Falsches Üben von Xylophonmusik quält jeden größeren Zwerg');
 ```
 
@@ -45,7 +45,7 @@ $slugger = new \Sunrise\Slugger\Slugger();
 
 $slugger->setTransliteratorId('Hiragana-Latin');
 
-// Returns "irohanihoheto chirinuruwo wakayotareso tsunenaramu uwinookuyama kefukoete asakiyumemishi wehimosesu"
+// "irohanihoheto chirinuruwo wakayotareso tsunenaramu uwinookuyama kefukoete asakiyumemishi wehimosesu"
 $slugger->transliterate('いろはにほへと ちりぬるを わかよたれそ つねならむ うゐのおくやま けふこえて あさきゆめみし ゑひもせす', '');
 ```
 
@@ -56,8 +56,8 @@ $slugger = new \Sunrise\Slugger\Slugger();
 
 $slugger->setTransliteratorId('Greek-Latin/BGN');
 
-// Returns "takhisti alopix vafis psimeni yi dhraskelizi iper nothrou kinos"
-$slugger->transliterate('Τάχιστη αλώπηξ βαφής ψημένη γη, δρασκελίζει υπέρ νωθρού κυνός', 'Lower(); Any-Latin; Latin-ASCII; [^\x20\x41-\x5A\x61-\x7A] Remove');
+// "takhisti alopix vafis psimeni yi dhraskelizi iper nothrou kinos"
+$slugger->transliterate('Τάχιστη αλώπηξ βαφής ψημένη γη, δρασκελίζει υπέρ νωθρού κυνός', 'Any-Latin; Latin-ASCII; Lower(); [^\x20\x30-\x39\x41-\x5A\x61-\x7A] Remove');
 ```
 
 #### Using DI Container
