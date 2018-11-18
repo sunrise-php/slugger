@@ -12,7 +12,12 @@
 namespace Sunrise\Slugger\Exception;
 
 /**
+ * Import classes
+ */
+use RuntimeException;
+
+/**
  * UnableToTransliterateException
  */
-class UnableToTransliterateException extends Exception
+class UnableToTransliterateException extends RuntimeException
 {}

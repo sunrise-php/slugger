@@ -3,7 +3,6 @@
 namespace Sunrise\Slugger\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Sunrise\Slugger\Exception\Exception;
 use Sunrise\Slugger\Exception\UnableToCreateTransliteratorException;
 use Sunrise\Slugger\Exception\UnableToTransliterateException;
 use Sunrise\Slugger\Exception\UnsupportedTransliteratorIdentifierException;
@@ -137,9 +136,8 @@ class SluggerTest extends TestCase
 
 	public function testExceptions()
 	{
-		$this->assertInstanceOf(\RuntimeException::class, new Exception(''));
-		$this->assertInstanceOf(Exception::class, new UnableToCreateTransliteratorException(''));
-		$this->assertInstanceOf(Exception::class, new UnableToTransliterateException(''));
-		$this->assertInstanceOf(Exception::class, new UnsupportedTransliteratorIdentifierException(''));
+		$this->assertInstanceOf(\RuntimeException::class, new UnableToCreateTransliteratorException(''));
+		$this->assertInstanceOf(\RuntimeException::class, new UnableToTransliterateException(''));
+		$this->assertInstanceOf(\RuntimeException::class, new UnsupportedTransliteratorIdentifierException(''));
 	}
 }
