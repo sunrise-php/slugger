@@ -1,4 +1,4 @@
-# Simple slugger for PHP 7.2+ based on ICU
+# Simple slugger for PHP 7.1+ based on ICU
 
 [![Gitter](https://badges.gitter.im/sunrise-php/support.png)](https://gitter.im/sunrise-php/support)
 [![Build Status](https://api.travis-ci.com/sunrise-php/slugger.svg?branch=master)](https://travis-ci.com/sunrise-php/slugger)
