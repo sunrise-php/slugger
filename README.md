@@ -4,7 +4,7 @@
 [![Build Status](https://api.travis-ci.com/sunrise-php/slugger.svg?branch=master)](https://travis-ci.com/sunrise-php/slugger)
 [![CodeFactor](https://www.codefactor.io/repository/github/sunrise-php/slugger/badge)](https://www.codefactor.io/repository/github/sunrise-php/slugger)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sunrise-php/slugger/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/sunrise-php/slugger/?branch=master)
-[![Code Intelligence Status](https://scrutinizer-ci.com/g/sunrise-php/slugger/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
+[![Code Coverage](https://scrutinizer-ci.com/g/sunrise-php/slugger/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/sunrise-php/slugger/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/sunrise/slugger/v/stable?format=flat)](https://packagist.org/packages/sunrise/slugger)
 [![Total Downloads](https://poser.pugx.org/sunrise/slugger/downloads?format=flat)](https://packagist.org/packages/sunrise/slugger)
 [![License](https://poser.pugx.org/sunrise/slugger/license?format=flat)](https://packagist.org/packages/sunrise/slugger)
@@ -66,13 +66,11 @@ $slugger->transliterate('Τάχιστη αλώπηξ βαφής ψημένη γ�
 #### Using DI Container
 
 ```php
-$di['slugger'] = function() : \Sunrise\Slugger\SluggerInterface
-{
-	$slugger = new \Sunrise\Slugger\Slugger();
+$di['slugger'] = function() : \Sunrise\Slugger\SluggerInterface {
+    $slugger = new \Sunrise\Slugger\Slugger();
+    $slugger->setTransliteratorId('de-ASCII');
 
-	$slugger->setTransliteratorId('de-ASCII');
-
-	return $slugger;
+    return $slugger;
 };
 
 $di['slugger']->slugify('Zwölf große Boxkämpfer jagen Viktor quer über den Sylter Deich.');
