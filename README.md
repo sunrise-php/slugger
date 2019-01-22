@@ -34,7 +34,6 @@ $slugger->slugify('Съешь ещё этих мягких французски�
 
 ```php
 $slugger = new \Sunrise\Slugger\Slugger();
-
 $slugger->setTransliteratorId('de-ASCII');
 
 // "falsches-ueben-von-xylophonmusik-quaelt-jeden-groesseren-zwerg"
@@ -45,7 +44,6 @@ $slugger->slugify('Falsches Üben von Xylophonmusik quält jeden größeren Zwer
 
 ```php
 $slugger = new \Sunrise\Slugger\Slugger();
-
 $slugger->setTransliteratorId('Hiragana-Latin');
 
 // "irohanihoheto chirinuruwo wakayotareso tsunenaramu uwinookuyama kefukoete asakiyumemishi wehimosesu"
@@ -56,7 +54,6 @@ $slugger->transliterate('いろはにほへと ちりぬるを わかよたれ�
 
 ```php
 $slugger = new \Sunrise\Slugger\Slugger();
-
 $slugger->setTransliteratorId('Greek-Latin/BGN');
 
 // "takhisti alopix vafis psimeni yi dhraskelizi iper nothrou kinos"
@@ -82,6 +79,6 @@ https://phpdoc.fenric.ru/
 
 ## Useful links
 
-http://site.icu-project.org/<br>
-http://userguide.icu-project.org/transforms/general<br>
-http://demo.icu-project.org/icu-bin/translit
+* http://site.icu-project.org/
+* http://userguide.icu-project.org/transforms/general
+* http://demo.icu-project.org/icu-bin/translit

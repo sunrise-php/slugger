@@ -1,7 +1,7 @@
 {
     "name": "sunrise/slugger",
-    "description": "Sunrise Slugger",
-    "keywords": ["fenric", "sunrise", "slugger"],
+    "description": "Simple slugger for PHP 7.1+ based on ICU",
+    "keywords": ["fenric", "sunrise", "slugger", "translater", "icu"],
     "homepage": "https://github.com/sunrise-php/slugger",
     "license": "MIT",
     "authors": [{
