@@ -42,6 +42,7 @@ class SluggerTest extends TestCase
 	public function testUnsupportedTransliterationId()
 	{
 		$this->expectException(UnsupportedTransliteratorIdentifierException::class);
+		$this->expectExceptionMessage('The transliterator identifier "Morrowind-Oblivion/KFC" is not supported');
 
 		$slugger = new Slugger();
 
@@ -128,6 +129,7 @@ class SluggerTest extends TestCase
 	public function testTransliterateWithInvalidCompound()
 	{
 		$this->expectException(UnableToCreateTransliteratorException::class);
+		$this->expectExceptionMessage('Unable to create transliterator with compound "Russian-Latin/BGN; UndefinedCommand()"');
 
 		$slugger = new Slugger();
 
