@@ -23,7 +23,9 @@ composer require sunrise/slugger
 #### Russian to Latin (default)
 
 ```php
-$slugger = new \Sunrise\Slugger\Slugger();
+use Sunrise\Slugger\Slugger;
+
+$slugger = new Slugger();
 
 // syesh-yeshche-etikh-myagkikh-frantsuzskikh-bulok-da-vypey-chayu
 $slugger->slugify('Съешь ещё этих мягких французских булок, да выпей чаю');
@@ -32,46 +34,12 @@ $slugger->slugify('Съешь ещё этих мягких французски�
 #### Deutsch to Latin
 
 ```php
-$slugger = new \Sunrise\Slugger\Slugger();
-$slugger->setTransliteratorId('de-ASCII');
+use Sunrise\Slugger\Slugger;
+
+$slugger = new Slugger('de-ASCII');
 
 // falsches-ueben-von-xylophonmusik-quaelt-jeden-groesseren-zwerg
 $slugger->slugify('Falsches Üben von Xylophonmusik quält jeden größeren Zwerg');
-```
-
-#### Only transliteration
-
-```php
-$slugger = new \Sunrise\Slugger\Slugger();
-$slugger->setTransliteratorId('Hiragana-Latin');
-
-// irohanihoheto chirinuruwo wakayotareso tsunenaramu uwinookuyama kefukoete asakiyumemishi wehimosesu
-$slugger->transliterate('いろはにほへと ちりぬるを わかよたれそ つねならむ うゐのおくやま けふこえて あさきゆめみし ゑひもせす', '');
-```
-
-#### Customization
-
-```php
-$slugger = new \Sunrise\Slugger\Slugger();
-$slugger->setTransliteratorId('Greek-Latin/BGN');
-
-// takhisti alopix vafis psimeni yi dhraskelizi iper nothrou kinos
-$slugger->transliterate('Τάχιστη αλώπηξ βαφής ψημένη γη, δρασκελίζει υπέρ νωθρού κυνός', 'Any-Latin; Latin-ASCII; Lower(); [^\x20\x30-\x39\x41-\x5A\x61-\x7A] Remove');
-```
-
-#### Using DI Container
-
-```php
-use Sunrise\Slugger\Slugger;
-use Sunrise\Slugger\SluggerInterface;
-
-$di['slugger'] = function () : SluggerInterface {
-    $slugger = new Slugger();
-    $slugger->setTransliteratorId('de-ASCII');
-    return $slugger;
-};
-
-$di['slugger']->slugify('Zwölf große Boxkämpfer jagen Viktor quer über den Sylter Deich.');
 ```
 
 ## Useful links
