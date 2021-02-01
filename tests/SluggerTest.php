@@ -11,135 +11,137 @@ use Sunrise\Slugger\SluggerInterface;
 
 class SluggerTest extends TestCase
 {
-	private const RUSSIAN_LATIN_TRANSLITERATOR_ID = 'Russian-Latin/BGN';
-	private const CYRILLIC_LATIN_TRANSLITERATOR_ID = 'Cyrillic-Latin';
+    private const RUSSIAN_LATIN_TRANSLITERATOR_ID = 'Russian-Latin/BGN';
+    private const CYRILLIC_LATIN_TRANSLITERATOR_ID = 'Cyrillic-Latin';
 
-	public function testConstructor()
-	{
-		$slugger = new Slugger();
+    public function testConstructor()
+    {
+        $slugger = new Slugger();
 
-		$this->assertInstanceOf(SluggerInterface::class, $slugger);
-	}
+        $this->assertInstanceOf(SluggerInterface::class, $slugger);
+    }
 
-	public function testTransliteratorId()
-	{
-		$slugger = new Slugger();
+    public function testTransliteratorId()
+    {
+        $slugger = new Slugger();
 
-		$slugger->setTransliteratorId(self::RUSSIAN_LATIN_TRANSLITERATOR_ID);
-		$this->assertEquals(self::RUSSIAN_LATIN_TRANSLITERATOR_ID, $slugger->getTransliteratorId());
+        $slugger->setTransliteratorId(self::RUSSIAN_LATIN_TRANSLITERATOR_ID);
+        $this->assertEquals(self::RUSSIAN_LATIN_TRANSLITERATOR_ID, $slugger->getTransliteratorId());
 
-		$slugger->setTransliteratorId(self::CYRILLIC_LATIN_TRANSLITERATOR_ID);
-		$this->assertEquals(self::CYRILLIC_LATIN_TRANSLITERATOR_ID, $slugger->getTransliteratorId());
-	}
+        $slugger->setTransliteratorId(self::CYRILLIC_LATIN_TRANSLITERATOR_ID);
+        $this->assertEquals(self::CYRILLIC_LATIN_TRANSLITERATOR_ID, $slugger->getTransliteratorId());
+    }
 
-	public function testDefaultTransliteratorId()
-	{
-		$slugger = new Slugger();
+    public function testDefaultTransliteratorId()
+    {
+        $slugger = new Slugger();
 
-		$this->assertEquals(self::RUSSIAN_LATIN_TRANSLITERATOR_ID, $slugger->getTransliteratorId());
-	}
+        $this->assertEquals(self::RUSSIAN_LATIN_TRANSLITERATOR_ID, $slugger->getTransliteratorId());
+    }
 
-	public function testUnsupportedTransliterationId()
-	{
-		$this->expectException(UnsupportedTransliteratorIdentifierException::class);
-		$this->expectExceptionMessage('The transliterator identifier "Morrowind-Oblivion/KFC" is not supported');
+    public function testUnsupportedTransliterationId()
+    {
+        $this->expectException(UnsupportedTransliteratorIdentifierException::class);
+        $this->expectExceptionMessage('The transliterator ID "Morrowind-Oblivion/KFC" is not supported');
 
-		$slugger = new Slugger();
+        $slugger = new Slugger();
 
-		$slugger->setTransliteratorId('Morrowind-Oblivion/KFC');
-	}
+        $slugger->setTransliteratorId('Morrowind-Oblivion/KFC');
+    }
 
-	public function testSupportedTransliteratorIds()
-	{
-		$slugger = new Slugger();
+    public function testSupportedTransliteratorIds()
+    {
+        $slugger = new Slugger();
 
-		$this->assertEquals(\transliterator_list_ids(), $slugger->getSupportedTransliteratorIds());
-	}
+        $this->assertEquals(\transliterator_list_ids(), $slugger->getSupportedTransliteratorIds());
+    }
 
-	public function testTransliterateRussianLatin()
-	{
-		$input = 'съешь ещё этих мягких французских булок, да выпей чаю';
-		$output = 'syesh yeshche etikh myagkikh frantsuzskikh bulok da vypey chayu';
+    public function testTransliterateRussianLatin()
+    {
+        $input = 'съешь ещё этих мягких французских булок, да выпей чаю';
+        $output = 'syesh yeshche etikh myagkikh frantsuzskikh bulok da vypey chayu';
+        $compound = 'Any-Latin; Latin-ASCII; [^\x20\x41-\x5A\x61-\x7A] Remove';
 
-		$slugger = new Slugger();
+        $slugger = new Slugger();
+        $slugger->setTransliteratorId(self::RUSSIAN_LATIN_TRANSLITERATOR_ID);
 
-		$slugger->setTransliteratorId(self::RUSSIAN_LATIN_TRANSLITERATOR_ID);
+        $this->assertEquals($output, $slugger->transliterate($input, $compound));
+    }
 
-		$this->assertEquals($output, $slugger->transliterate($input, 'Any-Latin; Latin-ASCII; [^\x20\x41-\x5A\x61-\x7A] Remove'));
-	}
+    public function testTransliterateCyrillicLatin()
+    {
+        $input = 'съешь ещё этих мягких французских булок, да выпей чаю';
+        $output = 'ses ese etih magkih francuzskih bulok da vypej cau';
+        $compound = 'Any-Latin; Latin-ASCII; [^\x20\x41-\x5A\x61-\x7A] Remove';
 
-	public function testTransliterateCyrillicLatin()
-	{
-		$input = 'съешь ещё этих мягких французских булок, да выпей чаю';
-		$output = 'ses ese etih magkih francuzskih bulok da vypej cau';
+        $slugger = new Slugger();
+        $slugger->setTransliteratorId(self::CYRILLIC_LATIN_TRANSLITERATOR_ID);
 
-		$slugger = new Slugger();
+        $this->assertEquals($output, $slugger->transliterate($input, $compound));
+    }
 
-		$slugger->setTransliteratorId(self::CYRILLIC_LATIN_TRANSLITERATOR_ID);
+    public function testSlugifyRussianLatin()
+    {
+        $input = 'съешь ещё этих мягких французских булок, да выпей чаю';
+        $output = 'syesh-yeshche-etikh-myagkikh-frantsuzskikh-bulok-da-vypey-chayu';
 
-		$this->assertEquals($output, $slugger->transliterate($input, 'Any-Latin; Latin-ASCII; [^\x20\x41-\x5A\x61-\x7A] Remove'));
-	}
+        $slugger = new Slugger();
 
-	public function testSlugifyRussianLatin()
-	{
-		$input = 'съешь ещё этих мягких французских булок, да выпей чаю';
-		$output = 'syesh-yeshche-etikh-myagkikh-frantsuzskikh-bulok-da-vypey-chayu';
+        $slugger->setTransliteratorId(self::RUSSIAN_LATIN_TRANSLITERATOR_ID);
 
-		$slugger = new Slugger();
+        $this->assertEquals($output, $slugger->slugify($input));
+    }
 
-		$slugger->setTransliteratorId(self::RUSSIAN_LATIN_TRANSLITERATOR_ID);
+    public function testSlugifyCyrillicLatin()
+    {
+        $input = 'съешь ещё этих мягких французских булок, да выпей чаю';
+        $output = 'ses-ese-etih-magkih-francuzskih-bulok-da-vypej-cau';
 
-		$this->assertEquals($output, $slugger->slugify($input));
-	}
+        $slugger = new Slugger();
 
-	public function testSlugifyCyrillicLatin()
-	{
-		$input = 'съешь ещё этих мягких французских булок, да выпей чаю';
-		$output = 'ses-ese-etih-magkih-francuzskih-bulok-da-vypej-cau';
+        $slugger->setTransliteratorId(self::CYRILLIC_LATIN_TRANSLITERATOR_ID);
 
-		$slugger = new Slugger();
+        $this->assertEquals($output, $slugger->slugify($input));
+    }
 
-		$slugger->setTransliteratorId(self::CYRILLIC_LATIN_TRANSLITERATOR_ID);
+    public function testSlugifyWithDelimiter()
+    {
+        $input = '   А   Б   В   ';
+        $output = 'a_b_v';
 
-		$this->assertEquals($output, $slugger->slugify($input));
-	}
+        $slugger = new Slugger();
 
-	public function testSlugifyWithDelimiter()
-	{
-		$input = '   А   Б   В   ';
-		$output = 'a_b_v';
+        $slugger->setTransliteratorId(self::RUSSIAN_LATIN_TRANSLITERATOR_ID);
 
-		$slugger = new Slugger();
+        $this->assertEquals($output, $slugger->slugify($input, '_'));
+    }
 
-		$slugger->setTransliteratorId(self::RUSSIAN_LATIN_TRANSLITERATOR_ID);
+    public function testSlugifyWithNumbers()
+    {
+        $input = '0123456789 ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz';
+        $output = '0123456789-abcdefghijklmnopqrstuvwxyz-abcdefghijklmnopqrstuvwxyz';
 
-		$this->assertEquals($output, $slugger->slugify($input, '_'));
-	}
+        $slugger = new Slugger();
 
-	public function testSlugifyWithNumbers()
-	{
-		$input = '0123456789 ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz';
-		$output = '0123456789-abcdefghijklmnopqrstuvwxyz-abcdefghijklmnopqrstuvwxyz';
+        $this->assertEquals($output, $slugger->slugify($input));
+    }
 
-		$slugger = new Slugger();
+    public function testTransliterateWithInvalidCompound()
+    {
+        $expectedMessage = 'Unable to create transliterator with compound "Russian-Latin/BGN; UndefinedCommand()"';
 
-		$this->assertEquals($output, $slugger->slugify($input));
-	}
+        $this->expectException(UnableToCreateTransliteratorException::class);
+        $this->expectExceptionMessage($expectedMessage);
 
-	public function testTransliterateWithInvalidCompound()
-	{
-		$this->expectException(UnableToCreateTransliteratorException::class);
-		$this->expectExceptionMessage('Unable to create transliterator with compound "Russian-Latin/BGN; UndefinedCommand()"');
+        $slugger = new Slugger();
 
-		$slugger = new Slugger();
+        $slugger->transliterate('', 'UndefinedCommand()');
+    }
 
-		$slugger->transliterate('', 'UndefinedCommand()');
-	}
-
-	public function testExceptions()
-	{
-		$this->assertInstanceOf(\RuntimeException::class, new UnableToCreateTransliteratorException(''));
-		$this->assertInstanceOf(\RuntimeException::class, new UnableToTransliterateException(''));
-		$this->assertInstanceOf(\RuntimeException::class, new UnsupportedTransliteratorIdentifierException(''));
-	}
+    public function testExceptions()
+    {
+        $this->assertInstanceOf(\RuntimeException::class, new UnableToCreateTransliteratorException(''));
+        $this->assertInstanceOf(\RuntimeException::class, new UnableToTransliterateException(''));
+        $this->assertInstanceOf(\RuntimeException::class, new UnsupportedTransliteratorIdentifierException(''));
+    }
 }
