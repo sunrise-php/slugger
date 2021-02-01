@@ -17,7 +17,8 @@ namespace Sunrise\Slugger\Exception;
 use RuntimeException;
 
 /**
- * UnsupportedTransliteratorIdentifierException
+ * Exception
  */
-class UnsupportedTransliteratorIdentifierException extends RuntimeException
-{}
+class Exception extends RuntimeException
+{
+}

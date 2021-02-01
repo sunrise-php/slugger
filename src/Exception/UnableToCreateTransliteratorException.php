@@ -12,12 +12,8 @@
 namespace Sunrise\Slugger\Exception;
 
 /**
- * Import classes
- */
-use RuntimeException;
-
-/**
  * UnableToCreateTransliteratorException
  */
-class UnableToCreateTransliteratorException extends RuntimeException
-{}
+class UnableToCreateTransliteratorException extends Exception
+{
+}

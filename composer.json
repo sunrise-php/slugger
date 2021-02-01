@@ -1,20 +1,31 @@
 {
     "name": "sunrise/slugger",
-    "description": "Simple slugger for PHP 7.1+ based on ICU",
-    "keywords": ["fenric", "sunrise", "slugger", "translit", "icu"],
     "homepage": "https://github.com/sunrise-php/slugger",
+    "description": "Simple slugger for PHP 7.1+ based on ICU",
     "license": "MIT",
-    "authors": [{
-        "name": "Anatoly Fenric",
-        "email": "anatoly@fenric.ru",
-        "homepage": "https://anatoly.fenric.ru/"
-    }],
+    "keywords": [
+        "fenric",
+        "sunrise",
+        "slugger",
+        "translit",
+        "icu",
+        "php7",
+        "php8"
+    ],
+    "authors": [
+        {
+            "name": "Anatoly Fenric",
+            "email": "anatoly@fenric.ru",
+            "homepage": "https://anatoly.fenric.ru/"
+        }
+    ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.1|^8.0",
         "ext-intl": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "7.5.6"
+        "phpunit/phpunit": "7.5.20|9.5.0",
+        "sunrise/coding-standard": "1.0.0"
     },
     "autoload": {
         "psr-4": {
@@ -23,7 +34,8 @@
     },
     "scripts": {
         "test": [
-            "phpunit --colors=always --coverage-text"
+            "phpunit --colors=always --coverage-text",
+            "phpcs"
         ]
     }
 }
