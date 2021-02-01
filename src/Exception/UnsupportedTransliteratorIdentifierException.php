@@ -20,4 +20,5 @@ use RuntimeException;
  * UnsupportedTransliteratorIdentifierException
  */
 class UnsupportedTransliteratorIdentifierException extends RuntimeException
-{}
+{
+}
