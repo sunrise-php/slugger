@@ -12,94 +12,126 @@
 namespace Sunrise\Slugger;
 
 /**
+ * Import functions
+ */
+use function in_array;
+use function preg_replace;
+use function sprintf;
+use function str_replace;
+use function transliterator_create;
+use function transliterator_list_ids;
+use function transliterator_transliterate;
+use function trim;
+
+/**
  * Slugger
+ *
+ * @link http://userguide.icu-project.org/transforms/general
  */
 class Slugger implements SluggerInterface
 {
 
-	/**
-	 * Default transliterator ID
-	 *
-	 * @var string
-	 */
-	protected $transliteratorId = 'Russian-Latin/BGN';
+    /**
+     * The transliterator ID
+     *
+     * @var string
+     */
+    protected $transliteratorId = 'Russian-Latin/BGN';
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function setTransliteratorId(string $transliteratorId) : void
-	{
-		$supported = $this->getSupportedTransliteratorIds();
+    /**
+     * Sets the transliterator ID
+     *
+     * @param string $transliteratorId
+     *
+     * @return void
+     *
+     * @throws Exception\UnsupportedTransliteratorIdentifierException
+     *
+     * @link http://userguide.icu-project.org/transforms/general#TOC-Basic-IDs
+     */
+    public function setTransliteratorId(string $transliteratorId) : void
+    {
+        $supportedTransliteratorIds = $this->getSupportedTransliteratorIds();
+        if (!in_array($transliteratorId, $supportedTransliteratorIds)) {
+            throw new Exception\UnsupportedTransliteratorIdentifierException(
+                sprintf('The transliterator ID "%s" is not supported', $transliteratorId)
+            );
+        }
 
-		if (! \in_array($transliteratorId, $supported))
-		{
-			throw new Exception\UnsupportedTransliteratorIdentifierException(
-				\sprintf('The transliterator identifier "%s" is not supported', $transliteratorId)
-			);
-		}
+        $this->transliteratorId = $transliteratorId;
+    }
 
-		$this->transliteratorId = $transliteratorId;
-	}
+    /**
+     * Gets the transliterator ID
+     *
+     * @return string
+     */
+    public function getTransliteratorId() : string
+    {
+        return $this->transliteratorId;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getTransliteratorId() : string
-	{
-		return $this->transliteratorId;
-	}
+    /**
+     * Gets supported transliterator IDs
+     *
+     * @return string[]
+     */
+    public function getSupportedTransliteratorIds() : array
+    {
+        return transliterator_list_ids();
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getSupportedTransliteratorIds() : array
-	{
-		return \transliterator_list_ids();
-	}
+    /**
+     * Transliterates the given string using the given compound
+     *
+     * @param string $string
+     * @param string $compound
+     *
+     * @return string
+     *
+     * @throws Exception\UnableToCreateTransliteratorException
+     * @throws Exception\UnableToTransliterateException
+     */
+    public function transliterate(string $string, string $compound) : string
+    {
+        $compound = $this->getTransliteratorId() . '; ' . $compound;
+        $transliterator = transliterator_create($compound);
+        if (null === $transliterator) {
+            throw new Exception\UnableToCreateTransliteratorException(
+                sprintf('Unable to create transliterator with compound "%s"', $compound)
+            );
+        }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function transliterate(string $string, string $compound) : string
-	{
-		$id = $this->getTransliteratorId();
+        $transliterated = transliterator_transliterate($transliterator, $string);
+        if (false === $transliterated) {
+            throw new Exception\UnableToTransliterateException(
+                sprintf('Unable to transliterate string with compound "%s"', $compound)
+            );
+        }
 
-		$compound = \sprintf('%s; %s', $id, $compound);
+        return $transliterated;
+    }
 
-		$transliterator = \transliterator_create($compound);
+    /**
+     * Converts the given string to slug
+     *
+     * @param string $string
+     * @param string $delimiter
+     *
+     * @return string
+     *
+     * @throws Exception\UnableToCreateTransliteratorException
+     * @throws Exception\UnableToTransliterateException
+     */
+    public function slugify(string $string, string $delimiter = '-') : string
+    {
+        $compound = 'Any-Latin; Latin-ASCII; Lower(); [^\x20\x30-\x39\x41-\x5A\x61-\x7A] Remove';
 
-		if (null === $transliterator)
-		{
-			throw new Exception\UnableToCreateTransliteratorException(
-				\sprintf('Unable to create transliterator with compound "%s"', $compound)
-			);
-		}
+        $slug = $this->transliterate($string, $compound);
+        $slug = preg_replace('/[\x20]{2,}/', ' ', $slug);
+        $slug = trim($slug);
+        $slug = str_replace(' ', $delimiter, $slug);
 
-		$transliterated = \transliterator_transliterate($transliterator, $string);
-
-		if (false === $transliterated)
-		{
-			throw new Exception\UnableToTransliterateException(
-				\sprintf('Unable to transliterate string with compound "%s"', $compound)
-			);
-		}
-
-		return $transliterated;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function slugify(string $string, string $delimiter = '-') : string
-	{
-		$slug = $this->transliterate($string, 'Any-Latin; Latin-ASCII; Lower(); [^\x20\x30-\x39\x41-\x5A\x61-\x7A] Remove');
-
-		$slug = \preg_replace('/[\x20]{2,}/', ' ', $slug);
-
-		$slug = \trim($slug);
-
-		$slug = \str_replace(' ', $delimiter, $slug);
-
-		return $slug;
-	}
+        return $slug;
+    }
 }
