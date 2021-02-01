@@ -1,12 +1,11 @@
 # Simple slugger for PHP 7.1+ (incl. PHP8) based on ICU
 
 [![Gitter](https://badges.gitter.im/sunrise-php/support.png)](https://gitter.im/sunrise-php/support)
-[![Build Status](https://api.travis-ci.com/sunrise-php/slugger.svg?branch=master)](https://travis-ci.com/sunrise-php/slugger)
-[![CodeFactor](https://www.codefactor.io/repository/github/sunrise-php/slugger/badge)](https://www.codefactor.io/repository/github/sunrise-php/slugger)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sunrise-php/slugger/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/sunrise-php/slugger/?branch=master)
+[![Build Status](https://circleci.com/gh/sunrise-php/slugger.svg?style=shield)](https://circleci.com/gh/sunrise-php/slugger)
 [![Code Coverage](https://scrutinizer-ci.com/g/sunrise-php/slugger/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/sunrise-php/slugger/?branch=master)
-[![Latest Stable Version](https://poser.pugx.org/sunrise/slugger/v/stable?format=flat)](https://packagist.org/packages/sunrise/slugger)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sunrise-php/slugger/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/sunrise-php/slugger/?branch=master)
 [![Total Downloads](https://poser.pugx.org/sunrise/slugger/downloads?format=flat)](https://packagist.org/packages/sunrise/slugger)
+[![Latest Stable Version](https://poser.pugx.org/sunrise/slugger/v/stable?format=flat)](https://packagist.org/packages/sunrise/slugger)
 [![License](https://poser.pugx.org/sunrise/slugger/license?format=flat)](https://packagist.org/packages/sunrise/slugger)
 
 ## Awards
@@ -26,7 +25,7 @@ composer require sunrise/slugger
 ```php
 $slugger = new \Sunrise\Slugger\Slugger();
 
-// "syesh-yeshche-etikh-myagkikh-frantsuzskikh-bulok-da-vypey-chayu"
+// syesh-yeshche-etikh-myagkikh-frantsuzskikh-bulok-da-vypey-chayu
 $slugger->slugify('Съешь ещё этих мягких французских булок, да выпей чаю');
 ```
 
@@ -36,7 +35,7 @@ $slugger->slugify('Съешь ещё этих мягких французски�
 $slugger = new \Sunrise\Slugger\Slugger();
 $slugger->setTransliteratorId('de-ASCII');
 
-// "falsches-ueben-von-xylophonmusik-quaelt-jeden-groesseren-zwerg"
+// falsches-ueben-von-xylophonmusik-quaelt-jeden-groesseren-zwerg
 $slugger->slugify('Falsches Üben von Xylophonmusik quält jeden größeren Zwerg');
 ```
 
@@ -46,7 +45,7 @@ $slugger->slugify('Falsches Üben von Xylophonmusik quält jeden größeren Zwer
 $slugger = new \Sunrise\Slugger\Slugger();
 $slugger->setTransliteratorId('Hiragana-Latin');
 
-// "irohanihoheto chirinuruwo wakayotareso tsunenaramu uwinookuyama kefukoete asakiyumemishi wehimosesu"
+// irohanihoheto chirinuruwo wakayotareso tsunenaramu uwinookuyama kefukoete asakiyumemishi wehimosesu
 $slugger->transliterate('いろはにほへと ちりぬるを わかよたれそ つねならむ うゐのおくやま けふこえて あさきゆめみし ゑひもせす', '');
 ```
 
@@ -56,17 +55,19 @@ $slugger->transliterate('いろはにほへと ちりぬるを わかよたれ�
 $slugger = new \Sunrise\Slugger\Slugger();
 $slugger->setTransliteratorId('Greek-Latin/BGN');
 
-// "takhisti alopix vafis psimeni yi dhraskelizi iper nothrou kinos"
+// takhisti alopix vafis psimeni yi dhraskelizi iper nothrou kinos
 $slugger->transliterate('Τάχιστη αλώπηξ βαφής ψημένη γη, δρασκελίζει υπέρ νωθρού κυνός', 'Any-Latin; Latin-ASCII; Lower(); [^\x20\x30-\x39\x41-\x5A\x61-\x7A] Remove');
 ```
 
 #### Using DI Container
 
 ```php
-$di['slugger'] = function() : \Sunrise\Slugger\SluggerInterface {
-    $slugger = new \Sunrise\Slugger\Slugger();
-    $slugger->setTransliteratorId('de-ASCII');
+use Sunrise\Slugger\Slugger;
+use Sunrise\Slugger\SluggerInterface;
 
+$di['slugger'] = function () : SluggerInterface {
+    $slugger = new Slugger();
+    $slugger->setTransliteratorId('de-ASCII');
     return $slugger;
 };
 
