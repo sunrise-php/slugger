@@ -1,4 +1,4 @@
-# Simple slugger for PHP 7.1+ based on ICU
+# Simple slugger for PHP 7.1+ (incl. PHP8) based on ICU
 
 [![Gitter](https://badges.gitter.im/sunrise-php/support.png)](https://gitter.im/sunrise-php/support)
 [![Build Status](https://api.travis-ci.com/sunrise-php/slugger.svg?branch=master)](https://travis-ci.com/sunrise-php/slugger)
@@ -15,7 +15,7 @@
 
 ## Installation
 
-```
+```bash
 composer require sunrise/slugger
 ```
 
@@ -72,10 +72,6 @@ $di['slugger'] = function() : \Sunrise\Slugger\SluggerInterface {
 
 $di['slugger']->slugify('Zwölf große Boxkämpfer jagen Viktor quer über den Sylter Deich.');
 ```
-
-## Api documentation
-
-https://phpdoc.fenric.ru/
 
 ## Useful links
 
