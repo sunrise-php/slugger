@@ -1,4 +1,4 @@
-# Simple slugger for PHP 7.1+ (incl. PHP8) based on ICU
+# Simple slugger for PHP 7.1+ (incl. PHP 8) based on ICU
 
 [![Gitter](https://badges.gitter.im/sunrise-php/support.png)](https://gitter.im/sunrise-php/support)
 [![Build Status](https://circleci.com/gh/sunrise-php/slugger.svg?style=shield)](https://circleci.com/gh/sunrise-php/slugger)
@@ -40,6 +40,18 @@ $slugger = new Slugger('de-ASCII');
 
 // falsches-ueben-von-xylophonmusik-quaelt-jeden-groesseren-zwerg
 $slugger->slugify('Falsches Üben von Xylophonmusik quält jeden größeren Zwerg');
+```
+
+#### Custom replacements
+
+```php
+$slugger = new Slugger(null, [
+    '.' => ' dot ',
+    '@' => ' at ',
+]);
+
+// admin@acme.com
+$slugger->slugify('admin-at-acme-dot-com');
 ```
 
 ## Useful links
