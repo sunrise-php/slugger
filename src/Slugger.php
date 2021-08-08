@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
  * It's free open-source software released under the MIT License.
@@ -22,7 +24,7 @@ use Sunrise\Slugger\Exception\UnableToTransliterateException;
  * Import functions
  */
 use function preg_replace;
-use function str_replace;
+use function strtr;
 use function trim;
 
 /**
@@ -32,24 +34,35 @@ class Slugger implements SluggerInterface
 {
 
     /**
-     * Transliterator instance
+     * Transliterator
      *
      * @var Transliterator
      */
     private $transliterator;
 
     /**
+     * Replacements
+     *
+     * @var array<string,string>
+     */
+    private $replacements = [
+        "'" => '', // <= <Ь>
+        '"' => '', // <= <Ъ>
+    ];
+
+    /**
      * Constructor of the class
      *
      * @param string $basicId
+     * @param array<string,string> $replacements
      *
      * @throws UnableToCreateTransliteratorException
      */
-    public function __construct(string $basicId = 'Russian-Latin/BGN')
+    public function __construct(?string $basicId = null, array $replacements = [])
     {
         // http://userguide.icu-project.org/transforms/general#TOC-Basic-IDs
         // http://userguide.icu-project.org/transforms/general#TOC-Compound-IDs
-        $compoundIds = $basicId . '; Any-Latin; Latin-ASCII; Lower(); [^\x20\x30-\x39\x41-\x5A\x61-\x7A] Remove';
+        $compoundIds = ($basicId ?? 'Russian-Latin/BGN') . '; Any-Latin; Latin-ASCII; Lower()';
 
         $transliterator = Transliterator::create($compoundIds, Transliterator::FORWARD);
         if (null === $transliterator) {
@@ -57,29 +70,25 @@ class Slugger implements SluggerInterface
         }
 
         $this->transliterator = $transliterator;
+        $this->replacements += $replacements;
     }
 
     /**
-     * Converts the given string to slug
-     *
-     * @param string $string
-     * @param string $delimiter
-     *
-     * @return string
+     * {@inheritdoc}
      *
      * @throws UnableToTransliterateException
      */
-    public function slugify(string $string, string $delimiter = '-') : string
+    public function slugify(string $string, string $separator = '-') : string
     {
-        $transliteratedString = $this->transliterator->transliterate($string);
-        if (false === $transliteratedString) {
+        $result = $this->transliterator->transliterate($string);
+        if (false === $result) {
             throw new UnableToTransliterateException('Unable to transliterate');
         }
 
-        $slug = preg_replace('/[\x20]{2,}/', ' ', $transliteratedString);
-        $slug = trim($slug);
-        $slug = str_replace(' ', $delimiter, $slug);
+        $result = strtr($result, $this->replacements);
+        $result = preg_replace('/[^0-9A-Za-z]++/', $separator, $result);
+        $result = trim($result, $separator);
 
-        return $slug;
+        return $result;
     }
 }

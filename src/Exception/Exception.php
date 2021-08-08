@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
  * It's free open-source software released under the MIT License.
@@ -14,11 +16,11 @@ namespace Sunrise\Slugger\Exception;
 /**
  * Import classes
  */
-use RuntimeException;
+use Exception as BaseException;
 
 /**
  * Exception
  */
-class Exception extends RuntimeException
+class Exception extends BaseException implements ExceptionInterface
 {
 }
