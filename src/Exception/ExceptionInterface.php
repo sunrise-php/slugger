@@ -14,8 +14,13 @@ declare(strict_types=1);
 namespace Sunrise\Slugger\Exception;
 
 /**
- * UnableToCreateTransliteratorException
+ * Import classes
  */
-class UnableToCreateTransliteratorException extends Exception
+use Throwable as BaseExceptionInterface;
+
+/**
+ * ExceptionInterface
+ */
+interface ExceptionInterface extends BaseExceptionInterface
 {
 }

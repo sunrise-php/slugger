@@ -2,6 +2,7 @@
 .phpunit.result.cache
 composer.lock
 coverage.xml
+phpbench.json
 phpcs.xml
 phpunit.xml
 vendor/
