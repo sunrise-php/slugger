@@ -61,7 +61,7 @@ class SluggerTest extends TestCase
         $output = 'syesh-yeshche-etikh-myagkikh-frantsuzskikh-bulok-da-vypey-chayu';
         $slugger = new Slugger();
 
-        $this->assertEquals($output, $slugger->slugify($input));
+        $this->assertSame($output, $slugger->slugify($input));
     }
 
     /**
@@ -73,7 +73,7 @@ class SluggerTest extends TestCase
         $output = '0123456789-abcdefghijklmnopqrstuvwxyz-abcdefghijklmnopqrstuvwxyz';
         $slugger = new Slugger();
 
-        $this->assertEquals($output, $slugger->slugify($input));
+        $this->assertSame($output, $slugger->slugify($input));
     }
 
     /**
@@ -85,7 +85,7 @@ class SluggerTest extends TestCase
         $output = 'a_b_v';
         $slugger = new Slugger();
 
-        $this->assertEquals($output, $slugger->slugify($input, '_'));
+        $this->assertSame($output, $slugger->slugify($input, '_'));
     }
 
     /**
@@ -97,7 +97,7 @@ class SluggerTest extends TestCase
         $output = 'syesh-yeshche-etikh-myagkikh-frantsuzskikh-bulok-da-vypey-chayu';
         $slugger = new Slugger(self::RUSSIAN_LATIN_TRANSLITERATOR_BASIC_ID);
 
-        $this->assertEquals($output, $slugger->slugify($input));
+        $this->assertSame($output, $slugger->slugify($input));
     }
 
     /**
@@ -109,7 +109,7 @@ class SluggerTest extends TestCase
         $output = 'ses-ese-etih-magkih-francuzskih-bulok-da-vypej-cau';
         $slugger = new Slugger(self::CYRILLIC_LATIN_TRANSLITERATOR_BASIC_ID);
 
-        $this->assertEquals($output, $slugger->slugify($input));
+        $this->assertSame($output, $slugger->slugify($input));
     }
 
     /**
@@ -124,7 +124,7 @@ class SluggerTest extends TestCase
             '€' => ' euro ',
         ]);
 
-        $this->assertEquals($output, $slugger->slugify($input));
+        $this->assertSame($output, $slugger->slugify($input));
     }
 
     /**
@@ -136,7 +136,7 @@ class SluggerTest extends TestCase
         $output = 's-t-a-l-k-ye-r';
         $slugger = new Slugger(self::RUSSIAN_LATIN_TRANSLITERATOR_BASIC_ID);
 
-        $this->assertEquals($output, $slugger->slugify($input));
+        $this->assertSame($output, $slugger->slugify($input));
     }
 
     /**
