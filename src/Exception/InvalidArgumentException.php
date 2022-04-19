@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Sunrise\Slugger\Exception;
 
 /**
- * Exception
+ * InvalidArgumentException
  */
-class Exception extends \Exception implements ExceptionInterface
+class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface
 {
 }

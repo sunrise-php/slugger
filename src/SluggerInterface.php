@@ -26,8 +26,6 @@ interface SluggerInterface
      * @param string $separator
      *
      * @return string
-     *
-     * @throws Exception\ExceptionInterface
      */
     public function slugify(string $string, string $separator) : string;
 }
