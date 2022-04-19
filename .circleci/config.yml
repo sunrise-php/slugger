@@ -6,39 +6,55 @@ version: 2
 jobs:
   php71:
     docker:
-      - image: circleci/php:7.1-cli-node-browsers
+      - image: cimg/php:7.1
     steps:
       - checkout
+      - run: sudo apt update -y
+      - run: sudo apt install -y php7.1-intl
       - run: php -v
       - run: composer install --no-interaction
       - run: XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-text
   php72:
     docker:
-      - image: circleci/php:7.2-cli-node-browsers
+      - image: cimg/php:7.2
     steps:
       - checkout
+      - run: sudo apt update -y
+      - run: sudo apt install -y php7.2-intl
       - run: php -v
       - run: composer install --no-interaction
       - run: XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-text
   php73:
     docker:
-      - image: circleci/php:7.3-cli-node-browsers
+      - image: cimg/php:7.3
     steps:
       - checkout
+      - run: sudo apt update -y
+      - run: sudo apt install -y php7.3-intl
       - run: php -v
       - run: composer install --no-interaction
       - run: XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-text
   php74:
     docker:
-      - image: circleci/php:7.4-cli-node-browsers
+      - image: cimg/php:7.4
     steps:
       - checkout
+      - run: sudo apt update -y
+      - run: sudo apt install -y php7.4-intl
       - run: php -v
       - run: composer install --no-interaction
       - run: XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-text
   php80:
     docker:
-      - image: circleci/php:8.0-cli-node-browsers
+      - image: cimg/php:8.0
+    steps:
+      - checkout
+      - run: php -v
+      - run: composer install --no-interaction
+      - run: XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-text
+  php81:
+    docker:
+      - image: cimg/php:8.1
     steps:
       - checkout
       - run: php -v
@@ -53,3 +69,4 @@ workflows:
       - php73
       - php74
       - php80
+      - php81
