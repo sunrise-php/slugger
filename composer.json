@@ -1,7 +1,7 @@
 {
     "name": "sunrise/slugger",
     "homepage": "https://github.com/sunrise-php/slugger",
-    "description": "Simple slugger for PHP 7.1+ (incl. PHP 8) based on ICU",
+    "description": "Slugger for PHP 7.1+ based on ICU",
     "license": "MIT",
     "keywords": [
         "fenric",
@@ -14,17 +14,17 @@
     "authors": [
         {
             "name": "Anatoly Fenric",
-            "email": "anatoly@fenric.ru",
-            "homepage": "https://anatoly.fenric.ru/"
+            "email": "afenric@gmail.com",
+            "homepage": "https://github.com/fenric"
         }
     ],
     "require": {
-        "ext-intl": "*",
-        "php": "^7.1|^8.0"
+        "php": "^7.1|^8.0",
+        "ext-intl": "*"
     },
     "require-dev": {
-        "sunrise/coding-standard": "1.0.0",
-        "phpunit/phpunit": "7.5.20|9.5.0"
+        "phpunit/phpunit": "7.5.20|9.5.0",
+        "sunrise/coding-standard": "1.0.0"
     },
     "autoload": {
         "psr-4": {
@@ -34,7 +34,12 @@
     "scripts": {
         "test": [
             "phpcs",
-            "XDEBUG_MODE=coverage phpunit --colors=always --coverage-text"
+            "psalm",
+            "XDEBUG_MODE=coverage phpunit --coverage-text --colors=always"
+        ],
+        "build": [
+            "phpdoc -d src/ -t phpdoc/",
+            "XDEBUG_MODE=coverage phpunit --coverage-html coverage/"
         ]
     }
 }
