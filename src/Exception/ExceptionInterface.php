@@ -14,13 +14,8 @@ declare(strict_types=1);
 namespace Sunrise\Slugger\Exception;
 
 /**
- * Import classes
- */
-use Throwable as BaseExceptionInterface;
-
-/**
  * ExceptionInterface
  */
-interface ExceptionInterface extends BaseExceptionInterface
+interface ExceptionInterface extends \Throwable
 {
 }

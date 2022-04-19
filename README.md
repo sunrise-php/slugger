@@ -1,4 +1,4 @@
-# Simple slugger for PHP 7.1+ (incl. PHP 8) based on ICU
+# Simple slugger for PHP 7.1+ based on ICU
 
 [![Gitter](https://badges.gitter.im/sunrise-php/support.png)](https://gitter.im/sunrise-php/support)
 [![Build Status](https://circleci.com/gh/sunrise-php/slugger.svg?style=shield)](https://circleci.com/gh/sunrise-php/slugger)
@@ -7,10 +7,6 @@
 [![Total Downloads](https://poser.pugx.org/sunrise/slugger/downloads?format=flat)](https://packagist.org/packages/sunrise/slugger)
 [![Latest Stable Version](https://poser.pugx.org/sunrise/slugger/v/stable?format=flat)](https://packagist.org/packages/sunrise/slugger)
 [![License](https://poser.pugx.org/sunrise/slugger/license?format=flat)](https://packagist.org/packages/sunrise/slugger)
-
-## Awards
-
-[![SymfonyInsight](https://insight.symfony.com/projects/64e80815-60f3-47eb-8163-8bd2538376e9/big.svg)](https://insight.symfony.com/projects/64e80815-60f3-47eb-8163-8bd2538376e9)
 
 ## Installation
 

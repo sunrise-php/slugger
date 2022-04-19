@@ -16,14 +16,17 @@ namespace Sunrise\Slugger;
 /**
  * Import classes
  */
-use Transliterator;
+use Sunrise\Slugger\Exception\InvalidArgumentException;
 use Sunrise\Slugger\Exception\UnableToCreateTransliteratorException;
 use Sunrise\Slugger\Exception\UnableToTransliterateException;
+use Transliterator;
 
 /**
  * Import functions
  */
+use function in_array;
 use function preg_replace;
+use function str_replace;
 use function strtr;
 use function trim;
 
@@ -34,43 +37,55 @@ class Slugger implements SluggerInterface
 {
 
     /**
+     * Default Basic ID
+     *
+     * @var string
+     *
+     * @link http://userguide.icu-project.org/transforms/general#TOC-Basic-IDs
+     */
+    protected const DEFAULT_BASIC_ID = 'Russian-Latin/BGN';
+
+    /**
      * Transliterator
      *
      * @var Transliterator
      */
-    private $transliterator;
+    protected $transliterator;
 
     /**
      * Replacements
      *
-     * @var array<string,string>
+     * @var array<string, string>
      */
-    private $replacements = [
-        "'" => '', // <= <Ь>
-        '"' => '', // <= <Ъ>
-    ];
+    protected $replacements = [];
 
     /**
      * Constructor of the class
      *
-     * @param string $basicId
-     * @param array<string,string> $replacements
+     * @param string|null $basicId
+     * @param array<string, string> $replacements
      *
+     * @throws InvalidArgumentException
      * @throws UnableToCreateTransliteratorException
      */
     public function __construct(?string $basicId = null, array $replacements = [])
     {
         // http://userguide.icu-project.org/transforms/general#TOC-Basic-IDs
-        // http://userguide.icu-project.org/transforms/general#TOC-Compound-IDs
-        $compoundIds = ($basicId ?? 'Russian-Latin/BGN') . '; Any-Latin; Latin-ASCII; Lower()';
+        /** @var string */
+        $basicId = $basicId ?? static::DEFAULT_BASIC_ID;
+        if (!in_array($basicId, Transliterator::listIDs(), true)) {
+            throw new InvalidArgumentException('Unknown Basic ID');
+        }
 
-        $transliterator = Transliterator::create($compoundIds, Transliterator::FORWARD);
-        if (null === $transliterator) {
+        // http://userguide.icu-project.org/transforms/general#TOC-Compound-IDs
+        $compoundIds = $basicId . '; Any-Latin; Latin-ASCII; Lower()';
+        $transliterator = Transliterator::create($compoundIds);
+        if ($transliterator === null) {
             throw new UnableToCreateTransliteratorException('Unable to create transliterator');
         }
 
         $this->transliterator = $transliterator;
-        $this->replacements += $replacements;
+        $this->replacements = $replacements;
     }
 
     /**
@@ -81,11 +96,12 @@ class Slugger implements SluggerInterface
     public function slugify(string $string, string $separator = '-') : string
     {
         $result = $this->transliterator->transliterate($string);
-        if (false === $result) {
+        if ($result === false) {
             throw new UnableToTransliterateException('Unable to transliterate');
         }
 
         $result = strtr($result, $this->replacements);
+        $result = str_replace(['"', "'"], '', $result);
         $result = preg_replace('/[^0-9A-Za-z]++/', $separator, $result);
         $result = trim($result, $separator);
 

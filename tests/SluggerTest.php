@@ -4,36 +4,19 @@ declare(strict_types=1);
 
 namespace Sunrise\Slugger\Tests;
 
-/**
- * Import classes
- */
 use PHPUnit\Framework\TestCase;
-use Sunrise\Slugger\Exception\Exception;
 use Sunrise\Slugger\Exception\ExceptionInterface;
+use Sunrise\Slugger\Exception\InvalidArgumentException;
 use Sunrise\Slugger\Exception\UnableToCreateTransliteratorException;
 use Sunrise\Slugger\Exception\UnableToTransliterateException;
 use Sunrise\Slugger\Slugger;
 use Sunrise\Slugger\SluggerInterface;
 
-/**
- * SluggerTest
- */
 class SluggerTest extends TestCase
 {
-
-    /**
-     * @var string
-     */
     private const RUSSIAN_LATIN_TRANSLITERATOR_BASIC_ID = 'Russian-Latin/BGN';
-
-    /**
-     * @var string
-     */
     private const CYRILLIC_LATIN_TRANSLITERATOR_BASIC_ID = 'Cyrillic-Latin';
 
-    /**
-     * @return void
-     */
     public function testContracts() : void
     {
         $slugger = new Slugger();
@@ -41,20 +24,14 @@ class SluggerTest extends TestCase
         $this->assertInstanceOf(SluggerInterface::class, $slugger);
     }
 
-    /**
-     * @return void
-     */
     public function testConstructorWithUnsupportedTransliteratorBasicId() : void
     {
-        $this->expectException(UnableToCreateTransliteratorException::class);
-        $this->expectExceptionMessage('Unable to create transliterator');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown Basic ID');
 
         new Slugger('Morrowind-Oblivion/KFC');
     }
 
-    /**
-     * @return void
-     */
     public function testSlugify() : void
     {
         $input = 'съешь ещё этих мягких французских булок, да выпей чаю';
@@ -64,9 +41,6 @@ class SluggerTest extends TestCase
         $this->assertSame($output, $slugger->slugify($input));
     }
 
-    /**
-     * @return void
-     */
     public function testSlugifyWithNumbers() : void
     {
         $input = '0123456789 ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz';
@@ -76,9 +50,6 @@ class SluggerTest extends TestCase
         $this->assertSame($output, $slugger->slugify($input));
     }
 
-    /**
-     * @return void
-     */
     public function testSlugifyWithSeparator() : void
     {
         $input = '   А   Б   В   ';
@@ -88,9 +59,6 @@ class SluggerTest extends TestCase
         $this->assertSame($output, $slugger->slugify($input, '_'));
     }
 
-    /**
-     * @return void
-     */
     public function testSlugifyWithRussianLatinTransliteratorBasicId() : void
     {
         $input = 'съешь ещё этих мягких французских булок, да выпей чаю';
@@ -100,9 +68,6 @@ class SluggerTest extends TestCase
         $this->assertSame($output, $slugger->slugify($input));
     }
 
-    /**
-     * @return void
-     */
     public function testSlugifyWithCyrillicLatinTransliteratorBasicId() : void
     {
         $input = 'съешь ещё этих мягких французских булок, да выпей чаю';
@@ -112,9 +77,6 @@ class SluggerTest extends TestCase
         $this->assertSame($output, $slugger->slugify($input));
     }
 
-    /**
-     * @return void
-     */
     public function testReplacements() : void
     {
         $input = 'У меня есть 1$ и 2€';
@@ -127,9 +89,6 @@ class SluggerTest extends TestCase
         $this->assertSame($output, $slugger->slugify($input));
     }
 
-    /**
-     * @return void
-     */
     public function testPunctuations() : void
     {
         $input = 'С.Т.А.Л.К.Е.Р.';
@@ -139,18 +98,15 @@ class SluggerTest extends TestCase
         $this->assertSame($output, $slugger->slugify($input));
     }
 
-    /**
-     * @return void
-     */
     public function testExceptions() : void
     {
-        $this->assertInstanceOf(\Throwable::class, new Exception());
-        $this->assertInstanceOf(ExceptionInterface::class, new Exception());
+        $this->assertInstanceOf(ExceptionInterface::class, new InvalidArgumentException());
+        $this->assertInstanceOf(\InvalidArgumentException::class, new InvalidArgumentException());
 
         $this->assertInstanceOf(ExceptionInterface::class, new UnableToCreateTransliteratorException());
-        $this->assertInstanceOf(Exception::class, new UnableToCreateTransliteratorException());
+        $this->assertInstanceOf(\RuntimeException::class, new UnableToCreateTransliteratorException());
 
         $this->assertInstanceOf(ExceptionInterface::class, new UnableToTransliterateException());
-        $this->assertInstanceOf(Exception::class, new UnableToTransliterateException());
+        $this->assertInstanceOf(\RuntimeException::class, new UnableToTransliterateException());
     }
 }
